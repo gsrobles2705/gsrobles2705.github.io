@@ -1,0 +1,305 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-white overflow-x-hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent/40;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid #4F7CFF;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Mouse-tracking spotlight card effect */
+  .card-spotlight {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-spotlight::before {
+    content: '';
+    position: absolute;
+    top: var(--mouse-y, 50%);
+    left: var(--mouse-x, 50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(79, 124, 255, 0.12) 0%,
+      rgba(79, 124, 255, 0.04) 40%,
+      transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card-spotlight:hover::before {
+    opacity: 1;
+  }
+
+  .card-spotlight:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(79, 124, 255, 0.1);
+  }
+
+  /* Top border shine animation */
+  .card-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(79, 124, 255, 0.6),
+      transparent
+    );
+    transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-shine:hover::after {
+    left: 150%;
+  }
+
+  /* Enhanced glassmorphism utilities */
+  .glass-v2 {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-v2-hover {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-v2-hover:hover {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(79, 124, 255, 0.15);
+    box-shadow: 0 8px 32px -8px rgba(79, 124, 255, 0.08);
+  }
+
+  /* Shimmer effect for "Coming Soon" states */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.03) 50%,
+      transparent 60%
+    );
+    transform: translateX(-100%);
+    animation: shimmer-slide 3s infinite;
+  }
+
+  @keyframes shimmer-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Soft pulsing badge glow */
+  .badge-glow {
+    box-shadow: 0 0 0 0 rgba(79, 124, 255, 0.4);
+    animation: badge-pulse 2s infinite;
+  }
+
+  @keyframes badge-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(79, 124, 255, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(79, 124, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(79, 124, 255, 0); }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass {
+    @apply bg-white/[0.02] backdrop-blur-xl border border-white/5;
+  }
+
+  .glass-hover {
+    @apply hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  .cursor-blink::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    color: #4F7CFF;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(600px); }
+  }
+
+  .animate-scan {
+    animation: scan 4s linear infinite;
+  }
+
+  .glitch-text {
+    position: relative;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .glitch-text:hover::before {
+    animation: glitch-1 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    color: #4F7CFF;
+    opacity: 0.8;
+    z-index: -1;
+  }
+
+  .glitch-text:hover::after {
+    animation: glitch-2 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+    color: #ff4f7c;
+    opacity: 0.8;
+    z-index: -2;
+  }
+
+  @keyframes glitch-1 {
+    0% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 2px); }
+    20% { clip-path: inset(92% 0 1% 0); transform: translate(1px, -1px); }
+    40% { clip-path: inset(43% 0 1% 0); transform: translate(-1px, 1px); }
+    60% { clip-path: inset(25% 0 58% 0); transform: translate(2px, -2px); }
+    80% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, 1px); }
+    100% { clip-path: inset(58% 0 43% 0); transform: translate(1px, -1px); }
+  }
+
+  @keyframes glitch-2 {
+    0% { clip-path: inset(65% 0 25% 0); transform: translate(2px, -1px); }
+    20% { clip-path: inset(15% 0 4% 0); transform: translate(-1px, 2px); }
+    40% { clip-path: inset(89% 0 11% 0); transform: translate(1px, -2px); }
+    60% { clip-path: inset(33% 0 68% 0); transform: translate(-2px, 1px); }
+    80% { clip-path: inset(2% 0 95% 0); transform: translate(2px, -1px); }
+    100% { clip-path: inset(76% 0 3% 0); transform: translate(-1px, 2px); }
+  }
+
+  .syntax-keyword { color: #c678dd; }
+  .syntax-string { color: #98c379; }
+  .syntax-function { color: #61afef; }
+  .syntax-comment { color: #5c6370; font-style: italic; }
+  .syntax-number { color: #d19a66; }
+  .syntax-operator { color: #56b6c2; }
+  .syntax-property { color: #e06c75; }
+  .syntax-tag { color: #e06c75; }
+  .syntax-attr { color: #d19a66; }
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-scan {
+    animation: none;
+  }
+
+  .shimmer::after {
+    animation: none;
+  }
+}
